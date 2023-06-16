@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BuyEverything.DataAccess\BuyEverything.DataAccess.csproj" />
     <ProjectReference Include="..\BuyEverything.Models\BuyEverything.Models.csproj" />
     <ProjectReference Include="..\BuyEverything.Utiliity\BuyEverything.Utility.csproj" />
   </ItemGroup>
