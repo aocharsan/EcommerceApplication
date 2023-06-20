@@ -1,12 +1,15 @@
 ﻿using BuyEverything.DataAccess.Repository.IRepository;
 using BuyEverything.Models;
 using BuyEverything.Models.ViewModels;
+using BuyEverything.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BuyEverything.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles =StaticDetails.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

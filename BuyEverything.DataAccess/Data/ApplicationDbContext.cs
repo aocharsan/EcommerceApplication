@@ -19,6 +19,7 @@ namespace BuyEverything.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
         //VIMP -->when anything is to be updated to database ,we have to use add-migration <name> 
 

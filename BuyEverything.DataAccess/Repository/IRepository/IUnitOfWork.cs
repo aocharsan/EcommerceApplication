@@ -10,6 +10,10 @@ namespace BuyEverything.DataAccess.Repository.IRepository
     {
         ICategoryRepo Category { get; }
         IProductRepo Product { get; }
+
+        IShoppingCartRepo ShoppingCart { get; }
+
+        IApplicationUserRepo ApplicationUser { get; }
         void Save();
 
 

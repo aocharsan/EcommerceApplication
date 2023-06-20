@@ -5,11 +5,16 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyEverything", "BuyEverything\BuyEverything.csproj", "{B60CF8CC-C0EE-4F6A-815D-49644CF93553}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuyEverything.DataAccess", "BuyEverything.DataAccess\BuyEverything.DataAccess.csproj", "{79776931-F75F-40EF-BE5E-CC2D72A12A3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyEverything.DataAccess", "BuyEverything.DataAccess\BuyEverything.DataAccess.csproj", "{79776931-F75F-40EF-BE5E-CC2D72A12A3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuyEverything.Models", "BuyEverything.Models\BuyEverything.Models.csproj", "{EBAFB45A-B962-4BFA-855C-BBFC29D41B73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyEverything.Models", "BuyEverything.Models\BuyEverything.Models.csproj", "{EBAFB45A-B962-4BFA-855C-BBFC29D41B73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuyEverything.Utility", "BuyEverything.Utiliity\BuyEverything.Utility.csproj", "{9E644F25-5B3D-4343-A81A-D9E556E4665C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyEverything.Utility", "BuyEverything.Utiliity\BuyEverything.Utility.csproj", "{9E644F25-5B3D-4343-A81A-D9E556E4665C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BF992EEC-E82A-4ACF-B1FC-05B7AD5FA1BD}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

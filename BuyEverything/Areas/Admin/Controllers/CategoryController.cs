@@ -1,12 +1,15 @@
 ﻿using BuyEverything.Data;
 using BuyEverything.DataAccess.Repository.IRepository;
 using BuyEverything.Models;
+using BuyEverything.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BuyEverything.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles =StaticDetails.Role_Admin)]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

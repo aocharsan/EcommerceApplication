@@ -1,4 +1,4 @@
-
+var dataTable;
 $(document).ready(function () {
     loadDataTable();
 
@@ -8,13 +8,13 @@ function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": {
             url: '/admin/product/getall',
-            type:'POST',
+            type: 'POST',
         },
         processing: true,
         serverSide: true,
         filter: true,
         "columns": [
-            { data: 'title' ,"width":"25%"},
+            { data: 'title', "width": "25%" },
             { data: 'isbn', "width": "15%" },
             { data: 'listPrice', "width": "10%" },
             { data: 'author', "width": "20%" },
@@ -27,18 +27,19 @@ function loadDataTable() {
                     return `<div class="w-75 btn-group" role="group">
                     
                       <a href="/admin/product/upsert?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> EDIT </a>
-                      <a onClick=Delete('/admin/product/delete/${data}') class="btn btn-danger mx-2"> <i class="bi bi-pencil-square"></i> DELETE </a>
+                      <a onClick=Delete('/admin/product/delete?id=${data}') class="btn btn-danger mx-2"> <i class="bi bi-pencil-square"></i> DELETE </a>
                      
                            </div>`
 
                 },
-                 
+
                 "width": "15%"
-               
+
             }
-    ]
-    
-});
+        ]
+
+    });
+}
 
     function Delete(url)
     {
@@ -57,7 +58,8 @@ function loadDataTable() {
                     type:'DELETE',
                     success: function (data)
                     {  //message data from controller Json()
-
+                        //reload auto after delete
+                        dataTable.ajax.reload();
                         toastr.success(data.message);
 
 
@@ -74,7 +76,7 @@ function loadDataTable() {
 
 
 
-}
+
 
 
 

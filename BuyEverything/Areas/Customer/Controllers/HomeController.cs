@@ -1,7 +1,9 @@
 ﻿using BuyEverything.DataAccess.Repository.IRepository;
 using BuyEverything.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace BuyEverything.Areas.Customer.Controllers
 {
@@ -25,12 +27,47 @@ namespace BuyEverything.Areas.Customer.Controllers
 
             return View(productList);
         }
-        public IActionResult Details(int? prodId)
+        public IActionResult Details(int prodId)
         {
-           Product prod = _unitOfWork.Product.GetFirstOrDefault(u=>u.Id==prodId , includeProperties: "Category");
+            ShoppingCart cart = new()
+            {
+                Product= _unitOfWork.Product.GetFirstOrDefault(u => u.Id == prodId, includeProperties: "Category"),
+                Count=1,
+                ProductId=prodId
+           };
+          
 
 
-            return View(prod);
+            return View(cart);
+        }
+        [HttpPost]
+        [Authorize]
+        public IActionResult Details(ShoppingCart cart)
+        {
+          var claimsIdentity=(ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            cart.ApplicationUserId = userId;
+            ShoppingCart cartFromDB = _unitOfWork.ShoppingCart.GetFirstOrDefault(u => u.ApplicationUserId == userId
+                                      && u.ProductId == cart.ProductId);
+
+            if (cartFromDB != null)
+            {
+                //i.e shopping cart exist
+                cartFromDB.Count += cart.Count;
+                _unitOfWork.ShoppingCart.Update(cartFromDB);
+            }
+            else 
+            {
+                 //add cart to DB
+                _unitOfWork.ShoppingCart.Add(cart);
+            }
+
+           
+            _unitOfWork.Save();
+
+
+
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Privacy()

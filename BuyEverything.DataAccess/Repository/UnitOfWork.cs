@@ -14,12 +14,16 @@ namespace BuyEverything.DataAccess.Repository
         private readonly ApplicationDbContext _db;
         public ICategoryRepo Category { get; private set; }
         public IProductRepo Product { get; private set; }
+        public IShoppingCartRepo ShoppingCart { get; private set; }
+        public IApplicationUserRepo ApplicationUser { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db) 
         {
             _db = db;
             Category=new CategoryRepo(db);
             Product = new ProductRepo(db);
+            ShoppingCart = new ShoppingCartRepo(db);
+            ApplicationUser = new ApplicationUserRepo(db);
         }
      
 
