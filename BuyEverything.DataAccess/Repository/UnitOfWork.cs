@@ -16,6 +16,8 @@ namespace BuyEverything.DataAccess.Repository
         public IProductRepo Product { get; private set; }
         public IShoppingCartRepo ShoppingCart { get; private set; }
         public IApplicationUserRepo ApplicationUser { get; private set; }
+        public IOrderHeaderRepo OrderHeader { get; private set; }
+        public IOrderDetailRepo OrderDetail { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db) 
         {
@@ -24,6 +26,8 @@ namespace BuyEverything.DataAccess.Repository
             Product = new ProductRepo(db);
             ShoppingCart = new ShoppingCartRepo(db);
             ApplicationUser = new ApplicationUserRepo(db);
+            OrderDetail = new OrderDetailRepo(db);
+            OrderHeader=new OrderHeaderRepo(db);
         }
      
 

@@ -31,17 +31,17 @@ namespace BuyEverything.Models
         [Required]
         [Display(Name = "Price")]
         [Range(1, 10000)]
-        public double? Price { get; set; }
+        public double Price { get; set; }
         [Required]
         [Display(Name = "Price 50+")]
         [Range(1, 10000)]
-        public double? Price50 { get; set; }
+        public double Price50 { get; set; }
 
 
         [Required]
         [Display(Name = "Price 100+")]
         [Range(1, 10000)]
-        public double? Price100 { get; set; }
+        public double Price100 { get; set; }
 
         [DisplayName("Display Order")]
         public int CategoryId { get; set; }

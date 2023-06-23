@@ -44,7 +44,7 @@ namespace BuyEverything.Areas.Customer.Controllers
         [Authorize]
         public IActionResult Details(ShoppingCart cart)
         {
-          var claimsIdentity=(ClaimsIdentity)User.Identity;
+            var claimsIdentity=(ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             cart.ApplicationUserId = userId;
             ShoppingCart cartFromDB = _unitOfWork.ShoppingCart.GetFirstOrDefault(u => u.ApplicationUserId == userId
