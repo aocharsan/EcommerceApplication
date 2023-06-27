@@ -170,6 +170,7 @@ namespace BuyEverything.Areas.Customer.Controllers
                 Response.Headers.Add("Location", session.Url);
                 return new StatusCodeResult(303);
             }
+     
             return RedirectToAction(nameof(OrderConfirmation), new { OrderId = shoppingCartVM.OrderHeader.Id });
 
         }
@@ -190,9 +191,11 @@ namespace BuyEverything.Areas.Customer.Controllers
 
             // After successful payment lets empty cart
             List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart
-                  .GetAll(u=>u.ApplicationUserId==orderHeader.ApplicationUserId).ToList();
+                  .GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
             _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
             _unitOfWork.Save();
+
+           HttpContext.Session.Clear();
 
             return View(OrderId);
         }
@@ -212,10 +215,12 @@ namespace BuyEverything.Areas.Customer.Controllers
 
         public IActionResult Minus(int cartId)
         {
-            var shoppingCartFromDB = _unitOfWork.ShoppingCart.GetFirstOrDefault(u => u.Id == cartId);
+            var shoppingCartFromDB = _unitOfWork.ShoppingCart.GetFirstOrDefault(u => u.Id == cartId, tracked: true);
             if (shoppingCartFromDB.Count <= 1)
             {
                 //remove it from cart
+                HttpContext.Session.SetInt32(StaticDetails.SessionCart, _unitOfWork.ShoppingCart
+                    .GetAll(u => u.ApplicationUserId == shoppingCartFromDB.ApplicationUserId).Count()-1);
                 _unitOfWork.ShoppingCart.Remove(shoppingCartFromDB);
             }
             else
@@ -233,9 +238,12 @@ namespace BuyEverything.Areas.Customer.Controllers
 
         public IActionResult Remove(int cartId)
         {
-            var shoppingCartFromDB = _unitOfWork.ShoppingCart.GetFirstOrDefault(u => u.Id == cartId);
+            var shoppingCartFromDB = _unitOfWork.ShoppingCart.GetFirstOrDefault(u => u.Id == cartId,tracked:true);
+            HttpContext.Session.SetInt32(StaticDetails.SessionCart, _unitOfWork.ShoppingCart
+                 .GetAll(u => u.ApplicationUserId == shoppingCartFromDB.ApplicationUserId).Count()-1);
             _unitOfWork.ShoppingCart.Remove(shoppingCartFromDB);
             _unitOfWork.Save();
+
             return RedirectToAction("Index");
 
         }

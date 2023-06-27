@@ -1,7 +1,10 @@
 ﻿using BuyEverything.DataAccess.Repository.IRepository;
 using BuyEverything.Models;
+using BuyEverything.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -22,8 +25,16 @@ namespace BuyEverything.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties:"Category");
-
+            //get userid og loggedin User
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null)
+            {
+                //get session for recover existing product count in the cart
+                HttpContext.Session.SetInt32(StaticDetails.SessionCart,
+                        _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value).Count());
+            }
+            IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category");
 
             return View(productList);
         }
@@ -44,30 +55,45 @@ namespace BuyEverything.Areas.Customer.Controllers
         [Authorize]
         public IActionResult Details(ShoppingCart cart)
         {
+            
+
             var claimsIdentity=(ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             cart.ApplicationUserId = userId;
             ShoppingCart cartFromDB = _unitOfWork.ShoppingCart.GetFirstOrDefault(u => u.ApplicationUserId == userId
                                       && u.ProductId == cart.ProductId);
 
-            if (cartFromDB != null)
-            {
-                //i.e shopping cart exist
-                cartFromDB.Count += cart.Count;
-                _unitOfWork.ShoppingCart.Update(cartFromDB);
-            }
-            else 
-            {
-                 //add cart to DB
-                _unitOfWork.ShoppingCart.Add(cart);
-            }
 
            
-            _unitOfWork.Save();
+
+            if (cartFromDB != null)
+                {
+                    //i.e shopping cart exist
+
+
+                    cartFromDB.Count += cart.Count;
+                    _unitOfWork.ShoppingCart.Update(cartFromDB);
+                    _unitOfWork.Save();
 
 
 
-            return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    //add cart to DB
+                    _unitOfWork.ShoppingCart.Add(cart);
+                    _unitOfWork.Save();
+                    HttpContext.Session.SetInt32(StaticDetails.SessionCart,
+                             _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId).Count());
+
+
+                }
+         
+         
+           
+                return RedirectToAction(nameof(Index));
+            
+
         }
 
         public IActionResult Privacy()
